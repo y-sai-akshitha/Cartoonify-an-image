@@ -1,5 +1,3 @@
-#Importing modules
-
 import cv2
 import easygui
 import numpy as np
@@ -10,20 +8,18 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import *
 
-#Building a File Box to choose a particular file
-
 def upload():
     ImagePath=easygui.fileopenbox()
     cartoonify(ImagePath)
 
 def cartoonify(ImagePath):
 
-    #read the image
+    #reading the image
     originalmage = cv2.imread(ImagePath)
     originalmage = cv2.cvtColor(originalmage, cv2.COLOR_BGR2RGB)
 #print(image)  # image is stored in form of numbers
 
-# confirm that image is chosen
+# confirming if the image is chosen or not
     if originalmage is None:
         print("Can not find any image. Choose appropriate file")
         sys.exit()
@@ -31,18 +27,17 @@ def cartoonify(ImagePath):
     ReSized1 = cv2.resize(originalmage, (960, 540))
 #plt.imshow(ReSized1, cmap='gray')
 
-#converting an image to grayscale
+#convertion of image to grayscale
     grayScaleImage = cv2.cvtColor(originalmage, cv2.COLOR_BGR2GRAY)
     ReSized2 = cv2.resize(grayScaleImage, (960, 540))
 #plt.imshow(ReSized2, cmap='gray')
 
-#applying median blur to smoothen an image
+#using median blur to smoothen the image
     smoothGrayScale = cv2.medianBlur(grayScaleImage, 5)
     ReSized3 = cv2.resize(smoothGrayScale, (960, 540))
 #plt.imshow(ReSized3, cmap='gray')
 
 #retrieving the edges for cartoon effect
-#by using thresholding technique
     getEdge = cv2.adaptiveThreshold(smoothGrayScale, 255, 
     cv2.ADAPTIVE_THRESH_MEAN_C, 
     cv2.THRESH_BINARY, 9, 9)
@@ -50,8 +45,8 @@ def cartoonify(ImagePath):
     ReSized4 = cv2.resize(getEdge, (960, 540))
 #plt.imshow(ReSized4, cmap='gray')
 
-#applying bilateral filter to remove noise 
-#and keep edge sharp as required
+#applying bilateral filter to remove noise and keeping the edge sharp as required
+
     colorImage = cv2.bilateralFilter(originalmage, 9, 300, 300)
     ReSized5 = cv2.resize(colorImage, (960, 540))
 #plt.imshow(ReSized5, cmap='gray')
